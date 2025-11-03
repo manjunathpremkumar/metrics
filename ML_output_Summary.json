@@ -1,0 +1,73 @@
+{
+  "service_name": "login-service",
+  "description": "Autonomous Optimization insights combining regression, classification, and forecasting for login-service between Nov 2024 and Nov 2025.",
+  "timestamp_window": "2024-11-01 to 2025-11-01",
+  "models": [
+    {
+      "id": "login_regression_latency_2025-10-27",
+      "analysis_type": "Regression",
+      "metrics_summary": {
+        "r2": 0.9429,
+        "rmse_ms": 46.35,
+        "mae_ms": 36.76
+      },
+      "cause_effect_pairs": [
+        {"cause": "TPS > 220", "effect": "Response time increases sharply"},
+        {"cause": "CPU > 70%", "effect": "Latency exceeds SLA"},
+        {"cause": "Replicas increased", "effect": "Latency decreases"}
+      ],
+      "narrative": "The regression model achieved R² = 0.94, indicating that 94% of latency variance is explained by system metrics. Response time rises sharply when TPS exceeds 220 or CPU utilization surpasses 70%. Adding replicas quickly reduces latency.",
+      "action_recommendation": "Monitor CPU > 70% or TPS > 220; pre-scale replicas +1 before expected surge; target latency < 500 ms.",
+      "confidence_level": "High",
+      "category": "Performance",
+      "embedding_text": "Login-service regression model explains 94% latency variance. TPS, CPU%, and Memory% strongly influence response time...",
+      "source": "Azure AutoML run: jolly_cheetah_zzp0rv97"
+    },
+    {
+      "id": "login_classification_state_2025-10-27",
+      "analysis_type": "Classification",
+      "metrics_summary": {
+        "accuracy": 0.9996,
+        "auc_weighted": 0.9999,
+        "f1_weighted": 0.9996,
+        "log_loss": 0.0029,
+        "balanced_accuracy": 0.9995
+      },
+      "cause_effect_pairs": [
+        {"cause": "Response time > 500 ms", "effect": "Transition from Healthy to Degrading"},
+        {"cause": "Memory utilization > 80%", "effect": "Increased probability of Degrading/Critical state"},
+        {"cause": "CPU > 75%", "effect": "System likely to enter Critical state"},
+        {"cause": "Replica count increased", "effect": "Transition back to Healthy state"}
+      ],
+      "narrative": "The XGBoost classifier achieved 99.96 % accuracy in labeling system health as Healthy, Degrading, or Critical. Response-time spikes, memory pressure, and high CPU utilization are key predictors of saturation. The model distinguishes these states almost perfectly.",
+      "action_recommendation": "Trigger auto-scaling or alerts when Degrading/Critical probability > 0.8 for three consecutive intervals.",
+      "confidence_level": "Very High",
+      "category": "Health",
+      "embedding_text": "Login-service health classification predicts Healthy/Degrading/Critical states with 99.9% accuracy. High latency and resource usage drive Degrading/Critical states.",
+      "source": "Azure AutoML run: great_holiday_xkq4r1lv"
+    },
+    {
+      "id": "login_forecast_tps_2025-11-01",
+      "analysis_type": "Forecasting",
+      "metrics_summary": {
+        "r2": 0.799,
+        "rmse_tps": 14.13,
+        "mae_tps": 11.44,
+        "nrmse": 0.060,
+        "spearman": 0.698
+      },
+      "cause_effect_pairs": [
+        {"cause": "Morning login surge (10 AM–2 PM)", "effect": "TPS rises ≈ 20 %"},
+        {"cause": "Evening/weekend low activity", "effect": "TPS drops ≈ 25 %"},
+        {"cause": "High CPU and memory pressure", "effect": "Throughput ceiling reached"},
+        {"cause": "Additional replicas", "effect": "Higher sustainable TPS with lower latency"}
+      ],
+      "narrative": "The forecasting model predicts a 20 % TPS increase between 10 AM and 2 PM, followed by a 25 % drop after 8 PM and during weekends. It captures recurring daily traffic cycles, enabling proactive scaling.",
+      "action_recommendation": "Pre-scale pods +2 at 09:45 AM to absorb the morning surge; scale down after 8 PM or during weekends by 25%.",
+      "confidence_level": "High",
+      "category": "Forecast",
+      "embedding_text": "Login-service forecasting model anticipates 20 % TPS rise between 10 AM–2 PM and weekend dip of 25 %. Suggest scaling up 2 replicas before morning peak.",
+      "source": "Azure AutoML run: witty_machine_62nxqmwb"
+    }
+  ]
+}
